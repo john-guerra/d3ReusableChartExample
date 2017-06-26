@@ -22,8 +22,9 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="barChart.js"></script>
 <script src="scatterPlot.js"></script>
+<script src="timeLineChart.js"></script>
 <script>
-/* global barChart, scatterPlot d3 */
+/* global barChart, scatterPlot, d3, timeSeriesChart */
 
 var myBarChart = barChart()
   .width(600)
@@ -37,6 +38,11 @@ var myScatterPlot = scatterPlot()
   .x(function (d) { return d.letter; })
   .y(function (d) { return d.frequency; });
 
+var tsChart = timeSeriesChart()
+    .x(function(d) { return formatDate.parse(d.date); })
+    .y(function(d) { return +d.price; });
+
+var formatDate = d3.timeFormat("%b %Y");
 
 d3.tsv("data.tsv",
   function(d) {
@@ -54,9 +60,14 @@ d3.tsv("data.tsv",
       .datum(data)
       .call(myScatterPlot);
 
+  }
+);
 
-  });
-
+d3.csv("sp500.csv", function(data) {
+  d3.select("#example")
+      .datum(data)
+      .call(tsChart);
+});
 
 
 
