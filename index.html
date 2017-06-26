@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis--x path {
+  display: none;
+}
+
+</style>
+
+
+<div id="chart"></div>
+<div id="chart2"></div>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="barChart.js"></script>
+<script src="scatterPlot.js"></script>
+<script>
+/* global barChart, scatterPlot d3 */
+
+var myBarChart = barChart()
+  .width(600)
+  .height(500)
+  .x(function (d) { return d.letter; })
+  .y(function (d) { return d.frequency; });
+
+var myScatterPlot = scatterPlot()
+  .width(600)
+  .height(500)
+  .x(function (d) { return d.letter; })
+  .y(function (d) { return d.frequency; });
+
+
+d3.tsv("data.tsv",
+  function(d) {
+    d.frequency = +d.frequency;
+    return d;
+  },
+  function (err, data) {
+    if (err) throw err;
+
+    d3.select("#chart")
+      .datum(data)
+      .call(myBarChart);
+
+    d3.select("#chart2")
+      .datum(data)
+      .call(myScatterPlot);
+
+
+  });
+
+
+
+
+
+
+
+
+
+</script>
