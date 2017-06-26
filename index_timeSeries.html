@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.area {
+  fill: #969696;
+}
+
+</style>
+
+
+<div id="example"></div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="timeSeriesChart.js"></script>
+<script>
+/* global d3, timeSeriesChart */
+
+var chart = timeSeriesChart()
+    .x(function(d) { return formatDate(d.date); })
+    .y(function(d) { return +d.price; });
+
+var formatDate = d3.timeParse("%b %Y");
+
+d3.csv("sp500.csv", function(data) {
+  d3.select("#example")
+      .datum(data)
+      .call(chart);
+});
+</script>
